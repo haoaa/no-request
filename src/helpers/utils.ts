@@ -12,9 +12,9 @@ export function isPlainObject(val: any): val is Object {
   return toString.call(val) === '[object Object]'
 }
 
-export function extend<T, U>(to: T & U, from: U): U & T {
+export function extend<T, U>(to: T, from: U): U & T {
   for (const key in from) {
-    to[key] = from[key] as any
+    ;(to as T & U)[key] = from[key] as any
   }
-  return to
+  return to as T & U
 }
