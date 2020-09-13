@@ -1,1 +1,5 @@
-function axios(config: any) {}
+import axios from './axios'
+
+export * from './types'
+
+export default axios
