@@ -4,6 +4,7 @@ const webpack = require('webpack')
 const webpackDevMiddleware = require('webpack-dev-middleware')
 const webpackHotMiddleware = require('webpack-hot-middleware')
 const WebpackConfig = require('./webpack.config')
+const path = require('path')
 
 const app = express()
 const compiler = webpack(WebpackConfig)
@@ -35,6 +36,10 @@ registerErrorRouter()
 registerExtendRouter()
 
 registerInterceptorRouter()
+
+registerConfigRouter()
+
+registerCancelRouter()
 
 app.use(router)
 
@@ -141,5 +146,25 @@ function registerExtendRouter () {
 function registerInterceptorRouter() {
   router.get('/interceptor/get', function(req, res) {
     res.end('hello')
+  })
+}
+
+function registerConfigRouter () {
+  router.post('/config/post', function(req, res) {
+    res.json(req.body)
+  })
+}
+
+function registerCancelRouter () {
+  router.get('/cancel/get', function(req, res) {
+    setTimeout(() => {
+      res.json('hello')
+    }, 1000)
+  })
+
+  router.post('/cancel/post', function(req, res) {
+    setTimeout(() => {
+      res.json(req.body)
+    }, 1000)
   })
 }
