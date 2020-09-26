@@ -1,10 +1,10 @@
-import { AxiosRequestConfig, AxiosResponse, AxiosPromise } from './types'
+import { AxiosRequestConfig, AxiosResponse, AxiosPromise } from '../types'
 import { parseHeaders } from '../helpers/headers'
 import { createError } from '../helpers/error'
 
 function xhr(config: AxiosRequestConfig): AxiosPromise {
   return new Promise((resolve, reject) => {
-    const { data = null, url, method = 'get', headers, responseType, timeout } = config
+    const { data = null, url, method = 'get', headers, responseType, timeout, cancelToken } = config
 
     const request = new XMLHttpRequest()
 
@@ -15,7 +15,7 @@ function xhr(config: AxiosRequestConfig): AxiosPromise {
       request.timeout = timeout
     }
 
-    request.open(method.toUpperCase(), url, true)
+    request.open(method.toUpperCase(), url!, true)
 
     request.onreadystatechange = function handler() {
       if (request.readyState !== 4) {
@@ -48,9 +48,9 @@ function xhr(config: AxiosRequestConfig): AxiosPromise {
       )
     }
 
-    request.onabort = function handleError() {
-      reject(new Error(`timeout`))
-    }
+    // request.onabort = function handleError() {
+    //   reject(new Error(`timeout`))
+    // }
 
     Object.keys(headers).forEach(name => {
       if (data === null && name.toLocaleLowerCase() === 'content-type') {
@@ -60,6 +60,15 @@ function xhr(config: AxiosRequestConfig): AxiosPromise {
       }
     })
 
+    if (cancelToken) {
+      cancelToken.promise.then(
+        reason => {
+          request.abort()
+          reject(reason)
+        },
+        _ => _
+      )
+    }
     request.send(data)
 
     function handleResponce(response: AxiosResponse): void {
