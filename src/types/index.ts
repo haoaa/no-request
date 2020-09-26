@@ -98,11 +98,11 @@ export interface AxiosStatic extends AxiosInstance {
   Cancel: CancelStatic
   isCancel(val: any): boolean
 
-  // all<T>(promises: Array<T | Promise<T>>): Promise<T[]>
+  all<T>(promises: Array<T | Promise<T>>): Promise<T[]>
 
-  // spread<T, R>(callback: (...args: T[]) => R): (arr: T[]) => R
+  spread<T, R>(callback: (...args: T[]) => R): (arr: T[]) => R
 
-  // Axios: AxiosClassStatic
+  Axios: AxiosClassStatic
 }
 
 export interface AxiosInterceptorManager<T> {

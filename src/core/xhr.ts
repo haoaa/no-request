@@ -106,9 +106,9 @@ function xhr(config: AxiosRequestConfig): AxiosPromise {
         }
       }
 
-      // if (auth) {
-      //   headers['Authorization'] = 'Basic ' + btoa(auth.username + ':' + auth.password)
-      // }
+      if (auth) {
+        headers['Authorization'] = 'Basic ' + btoa(auth.username + ':' + auth.password)
+      }
 
       Object.keys(headers).forEach(name => {
         if (data === null && name.toLocaleLowerCase() === 'content-type') {
@@ -132,15 +132,17 @@ function xhr(config: AxiosRequestConfig): AxiosPromise {
     }
 
     function handleResponce(response: AxiosResponse): void {
-      if (response.status >= 200 && response.status < 300) {
+      if (!validateStatus || validateStatus(response.status)) {
         resolve(response)
       } else {
-        createError(
-          `Request failed with status code ${response.status}`,
-          config,
-          null,
-          request,
-          response
+        reject(
+          createError(
+            `Request failed with status code ${response.status}`,
+            config,
+            null,
+            request,
+            response
+          )
         )
       }
     }
