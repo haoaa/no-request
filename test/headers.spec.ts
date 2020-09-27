@@ -67,7 +67,7 @@ describe('headers', () => {
     axios.post('/foo')
 
     return getAjaxRequest().then(request => {
-      testHeaderValue(request.requestHeaders, 'Content-Type', undefined)
+      testHeaderValue(request.requestHeaders, 'Content-Type')
     })
   })
 

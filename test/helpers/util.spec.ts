@@ -1,11 +1,12 @@
 import {
   isDate,
+  isObject,
   isPlainObject,
   isFormData,
   isURLSearchParams,
   extend,
   deepMerge
-} from '../../src/helpers/util'
+} from '../../src/helpers/utils'
 
 describe('helpers:util', () => {
   describe('isXX', () => {
@@ -17,6 +18,11 @@ describe('helpers:util', () => {
     test('should validate PlainObject', () => {
       expect(isPlainObject({})).toBeTruthy()
       expect(isPlainObject(new Date())).toBeFalsy()
+    })
+
+    test('should validate Object', () => {
+      expect(isObject({})).toBeTruthy()
+      expect(isObject(2)).toBeFalsy()
     })
 
     test('should validate FormData', () => {
