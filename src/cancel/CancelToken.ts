@@ -42,7 +42,3 @@ export default class CancelToken {
     }
   }
 }
-
-export function isCancel(value: any): boolean {
-  return value instanceof Cancel
-}

@@ -10,7 +10,7 @@ describe('cancel:CancelToken', () => {
         cancel = c
       })
       cancel!('Operation has been canceled.')
-      expect(token.reason).toEqual(expect.any(Cancel))
+      expect(token.reason).toEqual(expect.any(Cancel)) // instanceof: expect.any(Cancel)
       expect(token.reason!.message).toBe('Operation has been canceled.')
     })
 

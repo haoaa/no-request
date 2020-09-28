@@ -10,7 +10,7 @@ function xhr(config: AxiosRequestConfig): AxiosPromise {
     const {
       data = null,
       url,
-      method = 'get',
+      method,
       headers = {},
       responseType,
       timeout,
@@ -26,7 +26,7 @@ function xhr(config: AxiosRequestConfig): AxiosPromise {
 
     const request = new XMLHttpRequest()
 
-    request.open(method.toUpperCase(), url!, true)
+    request.open(method!.toUpperCase(), url!, true)
 
     configureRequest()
 
@@ -61,7 +61,8 @@ function xhr(config: AxiosRequestConfig): AxiosPromise {
           return
         }
         const responseHeaders = parseHeaders(request.getAllResponseHeaders())
-        const responseData = responseType !== 'text' ? request.response : request.responseText
+        const responseData =
+          responseType && responseType !== 'text' ? request.response : request.responseText
         const response: AxiosResponse = {
           data: responseData,
           status: request.status,
@@ -126,6 +127,7 @@ function xhr(config: AxiosRequestConfig): AxiosPromise {
             request.abort()
             reject(reason)
           },
+          /* istanbul ignore next */
           _ => _
         )
       }
